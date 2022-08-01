@@ -1,8 +1,8 @@
 <script>
-    export let filter = 'all'
-  </script>
+  export let filter = 'all'
+</script>
   
-  <div class="filters btn-group stack-exception">
+<div class="filters btn-group stack-exception">
     <button class="btn toggle-btn" class:btn__primary={filter === 'all'} aria-pressed={filter === 'all'} on:click={() => filter = 'all'} >
       <span class="visually-hidden">Show</span>
       <span>All</span>
@@ -18,5 +18,5 @@
       <span>Completed</span>
       <span class="visually-hidden">tasks</span>
     </button>
-  </div>
+</div>
   
