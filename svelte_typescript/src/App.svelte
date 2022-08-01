@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import Todos from './lib/Todos.svelte'
   import Alert from './lib/Alert.svelte'
   import { todos } from './stores'

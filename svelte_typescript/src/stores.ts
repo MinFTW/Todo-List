@@ -1,11 +1,12 @@
 import { writable } from 'svelte/store';
-import { localStore } from './localStore.js';
+import { localStore } from './localStore';
+import type { TodoType } from './types/todo.type';
 
 export const alert = writable('Welcome to the to-do list app!');
 
-const initialTodos = [
+const initialTodos: TodoType[] = [
   { id: 1, name: 'Visit MDN web docs', completed: true },
-  { id: 2, name: 'Complete the Svelte App', completed: false },
+  { id: 2, name: 'Complete the Svelte Tutorial', completed: false },
 ];
 
-export const todos = localStore('svelte-todo', initialTodos);
+export const todos = localStore<TodoType[]>('mdn-svelte-todo', initialTodos);

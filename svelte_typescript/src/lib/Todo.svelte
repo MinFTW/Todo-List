@@ -1,14 +1,15 @@
-<script>
+<script lang="ts">
   import { createEventDispatcher } from 'svelte'
   const dispatch = createEventDispatcher()
   import { selectOnFocus } from '../actions'
-  export let todo
+  import type { TodoType } from 'src/types/todo.type';
+  export let todo: TodoType
 
   let editing = false                     
   let editButtonPressed = false           
   let name = todo.name                    
 
-  function update(updatedTodo) {
+  function update(updatedTodo: Partial<TodoType>) {
     todo = { ...todo, ...updatedTodo }    
     dispatch('update', todo)              
   }
@@ -36,8 +37,8 @@
     update({ completed: !todo.completed}) 
   }
 
-  const focusOnInit = (node) => node && typeof node.focus === 'function' && node.focus()
-  const focusEditButton = (node) => editButtonPressed && node.focus()
+  const focusOnInit = (node: HTMLElement) => node && typeof node.focus === 'function' && node.focus()
+  const focusEditButton = (node: HTMLElement) => editButtonPressed && node.focus()
 </script>
 
 <div class="stack-small">

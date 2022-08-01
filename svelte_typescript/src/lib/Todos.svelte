@@ -1,47 +1,51 @@
-<script>
+<script lang="ts">
   import FilterButton from './FilterButton.svelte'
   import Todo from './Todo.svelte'
   import MoreActions from './MoreActions.svelte'
   import NewTodo from './NewTodo.svelte'  
   import TodosStatus from './TodosStatus.svelte'
   import { alert } from '../stores'
-  export let todos = []
-
-  let todosStatus                   
-
+  import { Filter } from "../types/filter.enum";
+  import type { TodoType } from "../types/todo.type";
+  export let todos: TodoType[] = [];
+  
+  let todosStatus: TodosStatus
+  
   $: newTodoId = todos.length ? Math.max(...todos.map(t => t.id)) + 1 : 1
   
-  function addTodo(name) {
+  function addTodo(name: string) {
     todos = [...todos, { id: newTodoId, name, completed: false }]
     $alert = `Todo '${name}' has been added`
   }
 
-  function updateTodo(todo) {
+  function updateTodo(todo: TodoType) {
   const i = todos.findIndex((t) => t.id === todo.id)
   if (todos[i].name !== todo.name) $alert = `todo '${todos[i].name}' has been renamed to '${todo.name}'`
   if (todos[i].completed !== todo.completed) $alert = `todo '${todos[i].name}' marked as ${todo.completed ? 'completed' : 'active'}`
   todos[i] = { ...todos[i], ...todo }
   }
 
-  function removeTodo(todo) {
+  function removeTodo(todo: TodoType) {
     todos = todos.filter(t => t.id !== todo.id)
     todosStatus.focus()        
     $alert = `Todo '${todo.name}' has been deleted`     
   }
 
-  let filter = 'all'
-  const filterTodos = (filter, todos) => 
-    filter === 'active' ? todos.filter(t => !t.completed) :
-    filter === 'completed' ? todos.filter(t => t.completed) : 
-    todos
-  
+  let filter: Filter = Filter.ALL;
+  const filterTodos = (filter: Filter, todos: TodoType[]) =>
+  filter === Filter.ACTIVE
+    ? todos.filter((t: TodoType) => !t.completed)
+    : filter === Filter.COMPLETED
+    ? todos.filter((t: TodoType) => t.completed)
+    : todos;
+
   $: {
-    if (filter === 'all')               $alert = 'Browsing all to-dos'
-    else if (filter === 'active')       $alert = 'Browsing active to-dos'
-    else if (filter === 'completed')    $alert = 'Browsing completed to-dos'
+    if (filter === Filter.ALL) $alert = "Browsing all todos";
+    else if (filter === Filter.ACTIVE) $alert = "Browsing active todos";
+    else if (filter === Filter.COMPLETED) $alert = "Browsing completed todos";
   }
 
-  const checkAllTodos = (completed) => {
+  const checkAllTodos = (completed: boolean) => {
   todos = todos.map((t) => ({...t, completed}))
   $alert = `${completed ? 'Checked' : 'Unchecked'} ${todos.length} to-dos`
   }

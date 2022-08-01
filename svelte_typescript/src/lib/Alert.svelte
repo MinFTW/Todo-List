@@ -1,15 +1,15 @@
-<script>
+<script lang="ts">
   import { onDestroy } from 'svelte'
   import { alert } from '../stores'
   import { fly } from 'svelte/transition'
   export let ms = 3000
 
-  let visible
-  let timeout
+  let visible: boolean
+  let timeout: any
 
-  const onMessageChange = (message, ms) => {
+  const onMessageChange = (message: string, ms: number) => {
     clearTimeout(timeout)
-    if (!message) {
+    if (!message) {  
       visible = false
     } else {
       visible = true
@@ -18,7 +18,8 @@
   }
   $: onMessageChange($alert, ms)
 
-  onDestroy(() => clearTimeout(timeout))           
+  onDestroy(() => clearTimeout(timeout))       
+
 </script>
 
   {#if visible}
